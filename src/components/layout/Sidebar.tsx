@@ -1,11 +1,11 @@
 
 import { 
-  grid_2x2 as Grid, 
-  plus as Plus, 
-  folder as Folder, 
-  user as User,
-  settings as Settings,
-  bell as Bell
+  Grid2x2 as Grid, 
+  Plus, 
+  Folder, 
+  User,
+  Settings,
+  Bell
 } from "lucide-react";
 
 interface SidebarProps {

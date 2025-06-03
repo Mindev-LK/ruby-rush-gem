@@ -1,5 +1,4 @@
-
-import { bell as Bell, user as User, settings as Settings } from "lucide-react";
+import { Bell, User, Settings } from "lucide-react";
 
 interface HeaderProps {
   currentUser: {
