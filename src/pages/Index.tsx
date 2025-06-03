@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { LoginPage } from "@/components/auth/LoginPage";
@@ -16,6 +15,7 @@ import { FinancialReports } from "@/components/reports/FinancialReports";
 import { AnalyticsDashboard } from "@/components/analytics/AnalyticsDashboard";
 import { UserManagement } from "@/components/admin/UserManagement";
 import { SystemSettings } from "@/components/settings/SystemSettings";
+import { DataBackupSecurity } from "@/components/admin/DataBackupSecurity";
 import { NotificationsCenter } from "@/components/notifications/NotificationsCenter";
 
 const Index = () => {
@@ -74,6 +74,8 @@ const Index = () => {
         return <UserManagement />;
       case "settings":
         return <SystemSettings />;
+      case "data-backup-security":
+        return <DataBackupSecurity />;
       case "notifications":
         return <NotificationsCenter />;
       default:

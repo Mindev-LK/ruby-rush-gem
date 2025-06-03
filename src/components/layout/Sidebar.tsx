@@ -69,7 +69,15 @@ export const Sidebar = ({ collapsed, currentPage, onPageChange, userRole }: Side
   if (userRole === "Super Admin") {
     menuItems.push(
       { id: "user-management", label: "User Management", icon: User },
-      { id: "settings", label: "Settings", icon: Settings }
+      { 
+        id: "settings", 
+        label: "System Settings", 
+        icon: Settings,
+        submenu: [
+          { id: "settings", label: "General Settings" },
+          { id: "data-backup-security", label: "Backup & Security" }
+        ]
+      }
     );
   }
 
