@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -45,7 +44,18 @@ export const InvestorDetailsModal = ({
   isEditMode, 
   onSave 
 }: InvestorDetailsModalProps) => {
-  const [editData, setEditData] = useState(investor || {});
+  const [editData, setEditData] = useState<Investor>(investor || {
+    id: 0,
+    name: "",
+    email: "",
+    phone: "",
+    totalInvestment: 0,
+    activeGems: 0,
+    currentReturn: 0,
+    profitLoss: 0,
+    status: "",
+    joinDate: ""
+  });
   const [investments, setInvestments] = useState<Investment[]>([
     {
       id: "1",
@@ -129,7 +139,7 @@ export const InvestorDetailsModal = ({
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  value={isEditMode ? editData.name : investor.name}
+                  value={isEditMode ? editData.name || "" : investor.name}
                   onChange={(e) => isEditMode && setEditData({...editData, name: e.target.value})}
                   readOnly={!isEditMode}
                 />
@@ -138,7 +148,7 @@ export const InvestorDetailsModal = ({
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
-                  value={isEditMode ? editData.email : investor.email}
+                  value={isEditMode ? editData.email || "" : investor.email}
                   onChange={(e) => isEditMode && setEditData({...editData, email: e.target.value})}
                   readOnly={!isEditMode}
                 />
@@ -147,7 +157,7 @@ export const InvestorDetailsModal = ({
                 <Label htmlFor="phone">Phone</Label>
                 <Input
                   id="phone"
-                  value={isEditMode ? editData.phone : investor.phone}
+                  value={isEditMode ? editData.phone || "" : investor.phone}
                   onChange={(e) => isEditMode && setEditData({...editData, phone: e.target.value})}
                   readOnly={!isEditMode}
                 />
@@ -157,7 +167,7 @@ export const InvestorDetailsModal = ({
                 <Input
                   id="joinDate"
                   type="date"
-                  value={isEditMode ? editData.joinDate : investor.joinDate}
+                  value={isEditMode ? editData.joinDate || "" : investor.joinDate}
                   onChange={(e) => isEditMode && setEditData({...editData, joinDate: e.target.value})}
                   readOnly={!isEditMode}
                 />

@@ -119,7 +119,7 @@ export const PaymentNotifications = ({ onNavigateToPayment }: PaymentNotificatio
                 variant="outline"
                 onClick={() => setSnoozeModal({ open: true, notificationId: notification.id })}
               >
-                <Snooze className="w-3 h-3" />
+                <Clock className="w-3 h-3" />
               </Button>
             </div>
           </CardContent>
