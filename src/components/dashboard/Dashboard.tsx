@@ -3,6 +3,7 @@ import { KPICards } from "./KPICards";
 import { AlertSection } from "./AlertSection";
 import { RecentActivity } from "./RecentActivity";
 import { QuickActions } from "./QuickActions";
+import { PayablesTracker } from "./PayablesTracker";
 
 export const Dashboard = () => {
   return (
@@ -13,8 +14,9 @@ export const Dashboard = () => {
         <div className="xl:col-span-2">
           <RecentActivity />
         </div>
-        <div>
+        <div className="space-y-6">
           <QuickActions />
+          <PayablesTracker />
         </div>
       </div>
     </div>

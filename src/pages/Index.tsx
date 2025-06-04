@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { LoginPage } from "@/components/auth/LoginPage";
@@ -17,6 +18,7 @@ import { UserManagement } from "@/components/admin/UserManagement";
 import { SystemSettings } from "@/components/settings/SystemSettings";
 import { DataBackupSecurity } from "@/components/admin/DataBackupSecurity";
 import { NotificationsCenter } from "@/components/notifications/NotificationsCenter";
+import { PaymentNotifications } from "@/components/notifications/PaymentNotifications";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -44,6 +46,16 @@ const Index = () => {
     setCurrentPage("dashboard");
   };
 
+  const handleNavigateToSalesEntry = () => {
+    setCurrentPage("sales-entry");
+  };
+
+  const handleNavigateToPayment = (purchaseRef: string) => {
+    // Navigate to payment page with purchase reference
+    console.log(`Navigating to payment for purchase: ${purchaseRef}`);
+    setCurrentPage("accounts-payable");
+  };
+
   const renderCurrentPage = () => {
     switch (currentPage) {
       case "dashboard":
@@ -55,7 +67,7 @@ const Index = () => {
       case "sales-entry":
         return <SalesEntry />;
       case "sales-management":
-        return <SalesManagement />;
+        return <SalesManagement onNavigateToSalesEntry={handleNavigateToSalesEntry} />;
       case "investor-management":
         return <InvestorManagement />;
       case "investment-tracking":
@@ -88,14 +100,17 @@ const Index = () => {
   }
 
   return (
-    <MainLayout
-      currentUser={currentUser}
-      onLogout={handleLogout}
-      currentPage={currentPage}
-      onPageChange={setCurrentPage}
-    >
-      {renderCurrentPage()}
-    </MainLayout>
+    <>
+      <MainLayout
+        currentUser={currentUser}
+        onLogout={handleLogout}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      >
+        {renderCurrentPage()}
+      </MainLayout>
+      <PaymentNotifications onNavigateToPayment={handleNavigateToPayment} />
+    </>
   );
 };
 

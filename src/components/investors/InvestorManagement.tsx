@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,10 +7,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Search, Plus, Eye, Edit, TrendingUp, TrendingDown, User } from "lucide-react";
+import { InvestorDetailsModal } from "./InvestorDetailsModal";
 
 export const InvestorManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [selectedInvestor, setSelectedInvestor] = useState(null);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const investorsData = [
     {
@@ -68,6 +71,17 @@ export const InvestorManagement = () => {
   const totalInvestments = investorsData.reduce((sum, inv) => sum + inv.totalInvestment, 0);
   const totalReturns = investorsData.reduce((sum, inv) => sum + inv.currentReturn, 0);
   const activeInvestors = investorsData.filter(inv => inv.status === "Active").length;
+
+  const openInvestorDetails = (investor, editMode = false) => {
+    setSelectedInvestor(investor);
+    setIsEditMode(editMode);
+    setIsDetailsModalOpen(true);
+  };
+
+  const handleSaveInvestor = (investorData) => {
+    // In a real app, this would update the investor in the database
+    console.log("Saving investor:", investorData);
+  };
 
   return (
     <div className="space-y-6">
@@ -173,7 +187,11 @@ export const InvestorManagement = () => {
       {/* Investor Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {investorsData.map((investor) => (
-          <Card key={investor.id} className="hover:shadow-lg transition-shadow">
+          <Card 
+            key={investor.id} 
+            className="hover:shadow-lg transition-shadow cursor-pointer"
+            onClick={() => openInvestorDetails(investor)}
+          >
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
                 <div className="flex items-center">
@@ -215,11 +233,27 @@ export const InvestorManagement = () => {
               <div className="pt-2 border-t">
                 <p className="text-xs text-gray-500 mb-2">Member since {new Date(investor.joinDate).toLocaleDateString()}</p>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openInvestorDetails(investor, false);
+                    }}
+                  >
                     <Eye className="w-3 h-3 mr-1" />
                     View Details
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openInvestorDetails(investor, true);
+                    }}
+                  >
                     <Edit className="w-3 h-3 mr-1" />
                     Edit
                   </Button>
@@ -302,6 +336,14 @@ export const InvestorManagement = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <InvestorDetailsModal
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
+        investor={selectedInvestor}
+        isEditMode={isEditMode}
+        onSave={handleSaveInvestor}
+      />
     </div>
   );
 };

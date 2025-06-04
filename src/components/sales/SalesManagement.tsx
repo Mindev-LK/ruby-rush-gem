@@ -7,7 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Filter, Download, Eye, Edit, Plus } from "lucide-react";
 
-export const SalesManagement = () => {
+interface SalesManagementProps {
+  onNavigateToSalesEntry?: () => void;
+}
+
+export const SalesManagement = ({ onNavigateToSalesEntry }: SalesManagementProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
@@ -78,7 +82,10 @@ export const SalesManagement = () => {
             Dashboard &gt; Sales Management
           </nav>
         </div>
-        <Button className="bg-black text-white hover:bg-gray-800">
+        <Button 
+          className="bg-black text-white hover:bg-gray-800"
+          onClick={onNavigateToSalesEntry}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Record New Sale
         </Button>

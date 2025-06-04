@@ -7,11 +7,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Upload, Calculator } from "lucide-react";
+import { CurrencySelector } from "@/components/shared/CurrencySelector";
+import { BuyerManager } from "@/components/shared/BuyerManager";
 
 export const SalesEntry = () => {
   const [selectedGem, setSelectedGem] = useState(null);
   const [salePrice, setSalePrice] = useState("");
-  const [purchasePrice] = useState(12500); // This would come from selected gem
+  const [saleCurrency, setSaleCurrency] = useState("USD");
+  const [selectedBuyer, setSelectedBuyer] = useState("");
+  const [buyerDetails, setBuyerDetails] = useState({});
+  const [purchasePrice] = useState(12500);
   const [profit, setProfit] = useState(0);
 
   const availableGems = [
@@ -23,6 +28,17 @@ export const SalesEntry = () => {
   const handleSalePriceChange = (value) => {
     setSalePrice(value);
     setProfit(value - purchasePrice);
+  };
+
+  const handleBuyerChange = (buyerId, buyerData) => {
+    setSelectedBuyer(buyerId);
+    if (buyerData) {
+      setBuyerDetails(buyerData);
+    }
+  };
+
+  const handleBuyerDetailsChange = (details) => {
+    setBuyerDetails({ ...buyerDetails, ...details });
   };
 
   return (
@@ -90,61 +106,12 @@ export const SalesEntry = () => {
           <CardHeader>
             <CardTitle>Buyer Information</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor="existingBuyer">Select Existing Buyer</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose existing buyer..." />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="international-gems">International Gems Ltd</SelectItem>
-                  <SelectItem value="luxury-jewelry">Luxury Jewelry Co</SelectItem>
-                  <SelectItem value="premium-stones">Premium Stones Inc</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="text-center text-gray-500 text-sm">OR</div>
-
-            <div className="space-y-3">
-              <div>
-                <Label htmlFor="buyerName">Buyer Name</Label>
-                <Input id="buyerName" placeholder="Enter buyer name" />
-              </div>
-              <div>
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input id="companyName" placeholder="Enter company name" />
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="buyer@company.com" />
-                </div>
-                <div>
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" placeholder="+1 (555) 000-0000" />
-                </div>
-              </div>
-              <div>
-                <Label htmlFor="address">Address</Label>
-                <Textarea id="address" placeholder="Complete address..." />
-              </div>
-              <div>
-                <Label htmlFor="country">Country</Label>
-                <Select>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select country..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="us">United States</SelectItem>
-                    <SelectItem value="uk">United Kingdom</SelectItem>
-                    <SelectItem value="canada">Canada</SelectItem>
-                    <SelectItem value="australia">Australia</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+          <CardContent>
+            <BuyerManager
+              selectedBuyer={selectedBuyer}
+              onBuyerChange={handleBuyerChange}
+              onBuyerDetailsChange={handleBuyerDetailsChange}
+            />
           </CardContent>
         </Card>
       </div>
@@ -160,7 +127,14 @@ export const SalesEntry = () => {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <Label htmlFor="salePrice">Sale Price (USD)</Label>
+              <CurrencySelector
+                value={saleCurrency}
+                onChange={setSaleCurrency}
+                label="Sale Currency"
+              />
+            </div>
+            <div>
+              <Label htmlFor="salePrice">Sale Price</Label>
               <Input 
                 id="salePrice" 
                 type="number"
@@ -179,7 +153,7 @@ export const SalesEntry = () => {
                 <SelectTrigger>
                   <SelectValue placeholder="Select method..." />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white border shadow-lg z-50">
                   <SelectItem value="cash">Cash</SelectItem>
                   <SelectItem value="cheque">Cheque</SelectItem>
                   <SelectItem value="bank-transfer">Bank Transfer</SelectItem>
@@ -187,13 +161,16 @@ export const SalesEntry = () => {
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             <div>
               <Label htmlFor="paymentStatus">Payment Status</Label>
               <Select>
                 <SelectTrigger>
                   <SelectValue placeholder="Select status..." />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white border shadow-lg z-50">
                   <SelectItem value="paid">Paid</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="partial">Partial</SelectItem>
@@ -212,7 +189,7 @@ export const SalesEntry = () => {
                 </div>
                 <div>
                   <span className="text-gray-600">Sale Price:</span>
-                  <p className="font-semibold">${Number(salePrice).toLocaleString()}</p>
+                  <p className="font-semibold">${Number(salePrice).toLocaleString()} {saleCurrency}</p>
                 </div>
                 <div>
                   <span className="text-gray-600">Profit:</span>
